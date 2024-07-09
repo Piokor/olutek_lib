@@ -6,7 +6,7 @@ import (
 	"io"
 	"net/http"
 
-	"github.com/Piokor/olutek_lib/internal/bookapi"
+	"github.com/Piokor/olutek_lib/internal/bookcatalogue"
 )
 
 func makeRequest(url string) ([]byte, error) {
@@ -15,6 +15,10 @@ func makeRequest(url string) ([]byte, error) {
 		return nil, fmt.Errorf("error making Google API http request: %s", err)
 	}
 	defer res.Body.Close()
+	status := res.StatusCode
+	if status != 200 {
+		return nil, fmt.Errorf("error making Google API http request, status code: %d", status)
+	}
 	body, err := io.ReadAll(res.Body)
 	if err != nil {
 		return nil, err
@@ -22,8 +26,8 @@ func makeRequest(url string) ([]byte, error) {
 	return body, nil
 }
 
-func GetVolume(volumeId string) (*bookapi.Volume, error) {
-	url, err := GetDetailUrl(volumeId)
+func Getbook(bookId string) (*bookcatalogue.Book, error) {
+	url, err := GetDetailUrl(bookId)
 	if err != nil {
 		return nil, err
 	}
@@ -37,11 +41,11 @@ func GetVolume(volumeId string) (*bookapi.Volume, error) {
 	if err != nil {
 		return nil, fmt.Errorf("error unmarshalling Google API http response: %s", err)
 	}
-	volume := responseVolume.ToVolume()
-	return &volume, nil
+	book := responseVolume.ToBook()
+	return &book, nil
 }
 
-func GetVolumes(query string) ([]bookapi.Volume, error) {
+func GetBooks(query string) ([]bookcatalogue.Book, error) {
 	url, err := GetListUrl(query)
 	if err != nil {
 		return nil, err
@@ -51,15 +55,15 @@ func GetVolumes(query string) ([]bookapi.Volume, error) {
 		return nil, err
 	}
 
-	responseVolumes := GoogleVolumeResults{}
-	err = json.Unmarshal(responseBody, &responseVolumes)
+	responseBooks := GoogleVolumeResults{}
+	err = json.Unmarshal(responseBody, &responseBooks)
 	if err != nil {
 		return nil, fmt.Errorf("error unmarshalling Google API http response: %s", err)
 	}
 
-	result := make([]bookapi.Volume, len(responseVolumes.Items))
-	for i, gv := range responseVolumes.Items {
-		result[i] = gv.ToVolume()
+	result := make([]bookcatalogue.Book, len(responseBooks.Items))
+	for i, gv := range responseBooks.Items {
+		result[i] = gv.ToBook()
 	}
 	return result, nil
 }

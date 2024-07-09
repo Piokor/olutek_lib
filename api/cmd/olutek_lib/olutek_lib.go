@@ -4,18 +4,24 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/Piokor/olutek_lib/internal/bookapi/googleapi"
+	"github.com/Piokor/olutek_lib/internal/database"
+	"github.com/Piokor/olutek_lib/internal/googleapi"
 	"github.com/joho/godotenv"
 )
 
 func main() {
 	godotenv.Load()
 
+	dbService, err := database.NewDbService()
+	if err != nil {
+		panic(err)
+	}
+
 	bookTitle := os.Args[1]
-	volumes, err := googleapi.GetVolumes(bookTitle)
+	books, err := googleapi.GetBooks(bookTitle)
 	if err != nil {
 		fmt.Print(err)
 		return
 	}
-	fmt.Print(volumes)
+	dbService.InsertBooks(books)
 }
