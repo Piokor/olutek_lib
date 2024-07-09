@@ -1,11 +1,8 @@
 package main
 
 import (
-	"fmt"
-	"os"
-
+	"github.com/Piokor/olutek_lib/internal/api"
 	"github.com/Piokor/olutek_lib/internal/database"
-	"github.com/Piokor/olutek_lib/internal/googleapi"
 	"github.com/joho/godotenv"
 )
 
@@ -17,11 +14,6 @@ func main() {
 		panic(err)
 	}
 
-	bookTitle := os.Args[1]
-	books, err := googleapi.GetBooks(bookTitle)
-	if err != nil {
-		fmt.Print(err)
-		return
-	}
-	dbService.InsertBooks(books)
+	router := api.GetRouter(dbService)
+	router.Run("localhost:8081")
 }

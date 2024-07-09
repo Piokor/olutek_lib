@@ -9,7 +9,7 @@ import (
 	_ "github.com/lib/pq"
 )
 
-func GetClient() (*sqlx.DB, error) {
+func getClient() (*sqlx.DB, error) {
 	connStr := fmt.Sprintf("postgresql://%s:%s@localhost:5432/%s?sslmode=disable", os.Getenv("DBUSER"), os.Getenv("DBPASSWORD"), os.Getenv("DBNAME"))
 
 	db, err := sqlx.Connect("postgres", connStr)
