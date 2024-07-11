@@ -20,8 +20,8 @@ CREATE TABLE users (
 )
 
 CREATE TABLE session (
-    id UUID,
-    user_id INTEGER REFERENCES users(id) NOT NULL,
+    id UUID UNIQUE,
+    user_id INTEGER REFERENCES users(id) NOT NULL UNIQUE,
     expires_at TIMESTAMP NOT NULL, 
     data TEXT
 )

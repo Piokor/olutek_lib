@@ -1,6 +1,8 @@
 package main
 
 import (
+	"os"
+
 	"github.com/Piokor/olutek_lib/internal/api"
 	"github.com/Piokor/olutek_lib/internal/database"
 	"github.com/joho/godotenv"
@@ -15,5 +17,5 @@ func main() {
 	}
 
 	router := api.GetRouter(dbService)
-	router.Run("localhost:8081")
+	router.Run(os.Getenv("DOMAIN"))
 }

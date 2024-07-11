@@ -15,7 +15,7 @@ func InsertUser(username, password string, dbService *database.DbService) (*User
 
 func SelectUser(username, password string, dbService *database.DbService) (*User, error) {
 	queryStr := `
-		SELECT (id, username) FROM users 
+		SELECT id, username FROM users 
 		WHERE username=$1 AND password=$2
 	`
 	user := User{}

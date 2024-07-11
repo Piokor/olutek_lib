@@ -14,12 +14,12 @@ func getBookFromApi(bookApiId string, dbService *database.DbService) (*Book, err
 		return nil, err
 	}
 	book := bookFromGoogleVolume(apiResult)
-	defer InsertBook(book, dbService)
+	defer insertBook(book, dbService)
 	return book, nil
 }
 
 func GetBook(bookApiId string, dbService *database.DbService) (*Book, error) {
-	dbResult, err := SelectBook(bookApiId, dbService)
+	dbResult, err := selectBook(bookApiId, dbService)
 	if err != nil {
 		log.Printf("Book %s not found in the DB, fetching from API...", bookApiId)
 		return getBookFromApi(bookApiId, dbService)
@@ -36,6 +36,6 @@ func GetBooks(query *googleapi.BookQuery, dbService *database.DbService) ([]*Boo
 	for i, apiResult := range apiResults {
 		books[i] = bookFromGoogleVolume(apiResult)
 	}
-	defer InsertBooks(books, dbService)
+	defer insertBooks(books, dbService)
 	return books, nil
 }

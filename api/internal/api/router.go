@@ -9,8 +9,8 @@ func GetRouter(dbService *database.DbService) *gin.Engine {
 	router := gin.Default()
 	router.Use(dbServiceMiddleware(dbService))
 
-	router.GET("/api/books-catalogue/book/:apiID", getBookHandler)
-	router.GET("/api/books-catalogue/books/:query", getBooksHandler)
+	bindBooksCatalogueRoutes(router)
+	bindAuthRoutes(router)
 
 	return router
 }

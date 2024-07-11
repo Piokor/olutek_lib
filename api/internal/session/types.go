@@ -7,10 +7,10 @@ import (
 )
 
 type Session struct {
-	Id        uuid.UUID `database:"id"`
-	UserId    int64     `database:"user_id"`
-	ExpiresAt time.Time `database:"expires_at"`
-	Data      string    `database:"data"`
+	Id        uuid.UUID `db:"id"`
+	UserId    int64     `db:"user_id"`
+	ExpiresAt time.Time `db:"expires_at"`
+	Data      string    `db:"data"`
 }
 
 func New(userId int64) *Session {
