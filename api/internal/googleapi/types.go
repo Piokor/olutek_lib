@@ -1,18 +1,16 @@
 package googleapi
 
-import "github.com/Piokor/olutek_lib/internal"
-
-type googleVolumeResults struct {
+type GoogleVolumeResults struct {
 	TotalItems int64          `json:"totalItems"`
-	Items      []googleVolume `json:"items"`
+	Items      []GoogleVolume `json:"items"`
 }
 
-type googleVolume struct {
+type GoogleVolume struct {
 	ID         string           `json:"id"`
-	VolumeInfo googleVolumeInfo `json:"volumeInfo"`
+	VolumeInfo GoogleVolumeInfo `json:"volumeInfo"`
 }
 
-type googleVolumeInfo struct {
+type GoogleVolumeInfo struct {
 	Title       string           `json:"title"`
 	Subtitle    string           `json:"subtitle"`
 	Authors     []string         `json:"authors"`
@@ -21,27 +19,10 @@ type googleVolumeInfo struct {
 	PageCount   int64            `json:"pageCount"`
 	Publisher   string           `json:"publisher"`
 	Language    string           `json:"language"`
-	ImageLinks  googleImageLinks `json:"imageLinks"`
+	ImageLinks  GoogleImageLinks `json:"imageLinks"`
 }
 
-type googleImageLinks struct {
+type GoogleImageLinks struct {
 	SmallThumbnail string `json:"smallThumbnail"`
 	Thumbnail      string `json:"thumbnail"`
-}
-
-func (gv googleVolume) toBook() *internal.Book {
-	book := internal.Book{
-		ID:             gv.ID,
-		Title:          gv.VolumeInfo.Title,
-		Subtitle:       gv.VolumeInfo.Subtitle,
-		Authors:        gv.VolumeInfo.Authors,
-		PublishDate:    gv.VolumeInfo.PublishDate,
-		Description:    gv.VolumeInfo.Description,
-		PageCount:      gv.VolumeInfo.PageCount,
-		Publisher:      gv.VolumeInfo.Publisher,
-		Language:       gv.VolumeInfo.Language,
-		SmallThumbnail: gv.VolumeInfo.ImageLinks.SmallThumbnail,
-		Thumbnail:      gv.VolumeInfo.ImageLinks.Thumbnail,
-	}
-	return &book
 }

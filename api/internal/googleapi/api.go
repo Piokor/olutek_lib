@@ -5,8 +5,6 @@ import (
 	"fmt"
 	"io"
 	"net/http"
-
-	"github.com/Piokor/olutek_lib/internal"
 )
 
 func makeRequest(url string) ([]byte, error) {
@@ -26,7 +24,7 @@ func makeRequest(url string) ([]byte, error) {
 	return body, nil
 }
 
-func GetBook(bookId string) (*internal.Book, error) {
+func GetBook(bookId string) (*GoogleVolume, error) {
 	url, err := getDetailUrl(bookId)
 	if err != nil {
 		return nil, err
@@ -36,15 +34,15 @@ func GetBook(bookId string) (*internal.Book, error) {
 		return nil, err
 	}
 
-	responseVolume := googleVolume{}
+	responseVolume := GoogleVolume{}
 	err = json.Unmarshal(responseBody, &responseVolume)
 	if err != nil {
 		return nil, fmt.Errorf("error unmarshalling Google API http response: %s", err)
 	}
-	return responseVolume.toBook(), nil
+	return &responseVolume, nil
 }
 
-func GetBooks(query *BookQuery) ([]*internal.Book, error) {
+func GetBooks(query *BookQuery) ([]*GoogleVolume, error) {
 	url, err := getListUrl(query)
 	if err != nil {
 		return nil, err
@@ -53,16 +51,14 @@ func GetBooks(query *BookQuery) ([]*internal.Book, error) {
 	if err != nil {
 		return nil, err
 	}
-
-	responseBooks := googleVolumeResults{}
+	responseBooks := GoogleVolumeResults{}
 	err = json.Unmarshal(responseBody, &responseBooks)
 	if err != nil {
 		return nil, fmt.Errorf("error unmarshalling Google API http response: %s", err)
 	}
-
-	result := make([]*internal.Book, len(responseBooks.Items))
+	result := make([]*GoogleVolume, len(responseBooks.Items))
 	for i, gv := range responseBooks.Items {
-		result[i] = gv.toBook()
+		result[i] = &gv
 	}
 	return result, nil
 }
