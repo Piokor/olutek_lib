@@ -44,7 +44,7 @@ func getBooksHandler(c *gin.Context) {
 	c.IndentedJSON(http.StatusOK, books)
 }
 
-func bindBooksCatalogueRoutes(router *gin.Engine) {
-	router.GET("/api/books-catalogue/book/:apiID", getBookHandler)
-	router.GET("/api/books-catalogue/books/:query", getBooksHandler)
+func bindBooksCatalogueRoutes(authorized gin.IRoutes) {
+	authorized.GET("/api/books-catalogue/book/:apiID", getBookHandler)
+	authorized.GET("/api/books-catalogue/books/:query", getBooksHandler)
 }

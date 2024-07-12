@@ -51,7 +51,7 @@ func getLoginHandler(c *gin.Context) {
 	setCookieAndGoHome(*sessionId, c)
 }
 
-func bindAuthRoutes(router *gin.Engine) {
+func bindAuthRoutes(router gin.IRoutes) {
 	router.POST("/api/auth/login", getLoginHandler)
 	router.POST("/api/auth/register", getRegisterHandler)
 }
