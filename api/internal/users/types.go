@@ -1,6 +1,6 @@
 package users
 
 type User struct {
-	Id       int64  `db:"id"`
-	Username string `db:"username"`
+	Id       int64  `json:"id" db:"id"`
+	Username string `json:"username" db:"username"`
 }

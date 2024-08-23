@@ -8,11 +8,13 @@ import (
 func GetRouter(dbService *database.DbService) *gin.Engine {
 	router := gin.Default()
 	router.Use(dbServiceMiddleware(dbService))
+	router.Use(CorsMiddleware())
 
 	bindAuthRoutes(router)
 	authorized := router.Group("/")
-	authorized.Use(authorizedMiddleware())
+	//authorized.Use(authorizedMiddleware())
 	bindBooksCatalogueRoutes(authorized)
+	bindBooksLibraryRoutes(authorized)
 
 	return router
 }

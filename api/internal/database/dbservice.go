@@ -37,6 +37,22 @@ func (*DbService) insertString(table string, options string, fields ...string) s
 	)
 }
 
+func (s *DbService) getPlaceholders(count int) string {
+	placeholders := make([]string, count)
+	for i := range count {
+		placeholders[i] = fmt.Sprintf("$%d", i+1)
+	}
+	return strings.Join(placeholders, ", ")
+}
+
+func (s *DbService) BuildInsertQuery(table string, fields []string, options string) string {
+	fieldsStr := strings.Join(fields, ", ")
+	placeholdersStr := s.getPlaceholders(len(fields))
+	return fmt.Sprintf(`
+		INSERT INTO %s (%s) VALUES (%s) %s
+	`, table, fieldsStr, placeholdersStr, options)
+}
+
 func (s *DbService) InsertWithOptions(table string, object interface{}, options string, fields ...string) error {
 	insertStr := s.insertString(table, options, fields...)
 	_, err := s.Client.NamedExec(insertStr, object)

@@ -5,20 +5,22 @@ import (
 	"strings"
 
 	"github.com/Piokor/olutek_lib/internal/googleapi"
+	"github.com/lib/pq"
 )
 
 type Book struct {
-	ID             string   `json:"api_id" db:"api_id"`
-	Title          string   `json:"title" db:"title"`
-	Subtitle       string   `json:"subtitle" db:"subtitle"`
-	Authors        []string `json:"authors" db:"authors"`
-	PublishDate    string   `json:"publishDate" db:"publish_date"`
-	Description    string   `json:"description" db:"description"`
-	PageCount      int64    `json:"pageCount" db:"page_count"`
-	Publisher      string   `json:"publisher" db:"publisher"`
-	Language       string   `json:"language" db:"language"`
-	SmallThumbnail string   `json:"smallThumbnail" db:"small_thumbnail"`
-	Thumbnail      string   `json:"thumbnail" db:"thumbnail"`
+	DbId           string         `json:"id" db:"id"`
+	ID             string         `json:"api_id" db:"api_id"`
+	Title          string         `json:"title" db:"title"`
+	Subtitle       string         `json:"subtitle" db:"subtitle"`
+	Authors        pq.StringArray `json:"authors" db:"authors"`
+	PublishDate    string         `json:"publishDate" db:"publish_date"`
+	Description    string         `json:"description" db:"description"`
+	PageCount      int64          `json:"pageCount" db:"page_count"`
+	Publisher      string         `json:"publisher" db:"publisher"`
+	Language       string         `json:"language" db:"language"`
+	SmallThumbnail string         `json:"smallThumbnail" db:"small_thumbnail"`
+	Thumbnail      string         `json:"thumbnail" db:"thumbnail"`
 }
 
 func (v Book) String() string {
